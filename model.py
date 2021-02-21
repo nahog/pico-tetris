@@ -1,17 +1,3 @@
-class Game:
-    def __init__(self):
-        self.points = 0
-        self.time = 0
-        self.status = 'reset'
-    def addPoints(self, points):
-        self.points += points
-    def moveTime(self):
-        self.time += 1
-    def reset(self):
-        self.status = 'reset'
-    def run(self):
-        self.status = 'running'
-
 class Tetromino:
     def __init__(self, name, tiles0, tiles90, tiles180, tiles270):
         self.name = name
@@ -51,7 +37,7 @@ class Tetromino:
             print('')
         print('--------')
 
-Tiles = [
+Tetrominos = [
     Tetromino('O',
         [[0,0],[0,1],[1,0],[1,1]], # 0
         [[0,0],[0,1],[1,0],[1,1]], # 90
@@ -96,14 +82,40 @@ Tiles = [
     ),
 ]
 
-class Board:
-    def __init__(self, width=20, height=50):
+class Tile:
+    def __init__(self, x, y, piece):
+        self.x = x
+        self.y = y
+        self.piece = piece
+
+PieceTypes = [
+    0, # Space
+    1, # Stone
+    2, # O
+    3, # I
+    4, # L
+    5, # J
+    6, # S
+    7, # Z
+    8, # T
+]
+
+class Piece:
+    def __init__(self, type):
+        self.type = type
+
+from random import randrange
+class Game:
+    def __init__(self, width=20, height=10):
         self.width = width
         self.height = height
         self.status = 'reset'
         self.points = 0
         self.time = 0
         self.tiles = []
+        for x in range(width):
+            for y in range(height):
+                self.tiles.append(Tile(x, y, Piece(randrange(9))))
     def addPoints(self, points):
         self.points += points
     def moveTime(self):

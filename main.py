@@ -3,8 +3,10 @@ from lib.picodisplay import PicoDisplay
 picodisplay = PicoDisplay()
 # import picodisplay
 
-from view import Colors, Square
+from view import Colors, Square, Board
 from random import randrange
+import time
+from model import Game
 
 width = picodisplay.get_width()
 height = picodisplay.get_height()
@@ -18,28 +20,13 @@ picodisplay.clear()
 
 # game start
 
-colors = Colors(picodisplay)
-c = [
-    colors.green,
-    colors.blue,
-    colors.yellow,
-    colors.magenta,
-    colors.fuscia,
-    colors.red,
-    colors.grey,
-    colors.black,
-    colors.white,
-    colors.blank
-]
+game = Game()
+board = Board(game, picodisplay)
 
-i = 0
-for x in [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220]:
-    for y in [0,10,20,30,40,50,60,70,80,90,100,110,120]:
-        square = Square(picodisplay, x, y, c[i])
-        square.draw()
-    i = 0 if i == 6 else i + 1
-
-picodisplay.update()
+#while(game.time < 10):
+#    game.moveTime()
+board.draw()
+#    time.sleep(500)
 
 # added for emulation
 picodisplay.keep_running()

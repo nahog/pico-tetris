@@ -1,3 +1,5 @@
+from model import Game
+
 class Color:
     _intensityGradient1 = 25
     _intensityGradient2 = _intensityGradient1 * 2
@@ -64,3 +66,36 @@ class Square:
         self._display.rectangle(self.x + 1, self.y + 1, Square.size - 1, Square.size - 1)
         self.color.enable_color()
         self._display.rectangle(self.x + 1, self.y + 1, Square.size - 2, Square.size - 2)
+
+class Board:
+    def __init__(self, game, display, width=200, height=100, square_size=10):
+        self._game = game
+        self._width = width
+        self._height = height
+        self._display = display
+        self._square_size = square_size
+
+    def _map_piece_type_to_color(self, piece_type):
+        colors = Colors(self._display)
+        if piece_type == 0:
+            return colors.blank
+        elif piece_type == 1:
+            return colors.white
+        elif piece_type == 2:
+            return colors.yellow
+        elif piece_type == 3:
+            return colors.magenta
+        elif piece_type == 4:
+            return colors.blue
+        elif piece_type == 5:
+            return colors.grey
+        elif piece_type == 6:
+            return colors.green
+        elif piece_type == 7:
+            return colors.red
+        elif piece_type == 8:
+            return colors.fuscia
+
+    def draw(self):
+        for tile in self._game.tiles:
+            Square(self._display, tile.x * self._square_size, tile.y * self._square_size, self._map_piece_type_to_color(tile.piece.type)).draw()
