@@ -120,7 +120,10 @@ class Game:
         self.points += points
     def moveTime(self):
         self.time += 1
+        for i in range(len(self.tiles)):
+            self.tiles[i] = Tile(self.tiles[i].x, self.tiles[i].y, Piece(randrange(9)))
     def reset(self):
+        self.time = 0
         self.status = 'reset'
     def run(self):
         self.status = 'running'

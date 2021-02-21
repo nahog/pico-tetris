@@ -23,10 +23,11 @@ picodisplay.clear()
 game = Game()
 board = Board(game, picodisplay)
 
-#while(game.time < 10):
-#    game.moveTime()
-board.draw()
-#    time.sleep(500)
+while(True):
+    board.draw()
+    game.moveTime()
+    picodisplay.update()
+    time.sleep(1)
 
 # added for emulation
 picodisplay.keep_running()
