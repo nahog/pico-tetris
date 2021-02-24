@@ -46,7 +46,42 @@ class Colors:
         self.magenta = Color(display, 0, 200, 200)
         self.black = Color(display, 0, 0, 0)
         self.white = Color(display, 255, 255, 255)
-        self.blank = Color(display, 0, 0, 0, gradient=False)
+        self.white_fill = Color(display, 255, 255, 255, gradient=False)
+        self.black_fill = Color(display, 0, 0, 0, gradient=False)
+
+class Frame:
+    size = 10
+    def __init__(self, display, x, y, width, height, fg_color, bg_color=None, line_width=1):
+        self._display = display
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.line_width = line_width
+        self.fg_color = fg_color
+        self.bg_color = bg_color
+
+    def draw(self):
+        self.fg_color.enable_color()
+        self._display.rectangle(self.x, self.y, self.width + 1, self.height + 1)
+        self.bg_color.enable_color()
+        self._display.rectangle(self.x + 1, self.y + 1, self.width - 1, self.height - 1)
+
+class Grid:
+    size = 10
+    def __init__(self, display, x, y, width, height, fg_color):
+        self._display = display
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.fg_color =  fg_color
+
+    def draw(self):
+        self.fg_color.enable_color()
+        for x in range(self.x, self.width + self.x + 1, self.size):
+            for y in range(self.y, self.height + self.y + 1, self.size):
+                self._display.pixel(x, y)
 
 class Square:
     size = 10
@@ -68,17 +103,26 @@ class Square:
         self._display.rectangle(self.x + 1, self.y + 1, Square.size - 2, Square.size - 2)
 
 class Board:
-    def __init__(self, game, display, width=200, height=100, square_size=10):
+    def __init__(self, game, display, x=10, y=10, width=200, height=100, square_size=10, draw_frame=True, draw_grid=True):
         self._game = game
         self._width = width
         self._height = height
         self._display = display
         self._square_size = square_size
+        self._x = x
+        self._y = y
+        self._draw_frame = draw_frame
+        colors = Colors(display)
+        self._frame = Frame(display, x - 2, y - 2, width + 4, height + 4, colors.white_fill, colors.black_fill)
+        self._draw_grid  = draw_grid 
+        self._grid = Grid(display, x, y, width, height, colors.white_fill)
+        if self._draw_frame:
+            self._frame.draw()
 
     def _map_piece_type_to_color(self, piece_type):
         colors = Colors(self._display)
         if piece_type == 0:
-            return colors.blank
+            return colors.black_fill
         elif piece_type == 1:
             return colors.white
         elif piece_type == 2:
@@ -97,5 +141,7 @@ class Board:
             return colors.fuscia
 
     def draw(self):
-        for tile in self._game.tiles:
-            Square(self._display, tile.x * self._square_size, tile.y * self._square_size, self._map_piece_type_to_color(tile.piece.type)).draw()
+        for tile in self._game.changed_tiles:
+            Square(self._display, self._x + (tile.x * self._square_size), self._y + (tile.y * self._square_size), self._map_piece_type_to_color(tile.piece.type)).draw()
+        if self._draw_grid:
+            self._grid.draw()

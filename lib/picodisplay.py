@@ -17,6 +17,7 @@ class PicoDisplay:
         self._canvas_width = 240
         self._canvas_height = 135
         self._win = GraphWin("Pico Display", self._canvas_width, self._canvas_height)
+        self._lastKey = ''
 
     def init(self, buffer):
         self._buffer = buffer
@@ -35,25 +36,23 @@ class PicoDisplay:
         self._led_g = g
         self._led_b = b
 
-    def set_pressed(self, button, value):
-        if button == self.BUTTON_A:
-            self._button_a = value
-        elif button == self.BUTTON_B:
-            self._button_b = value
-        elif button == self.BUTTON_X:
-            self._button_x = value
-        elif button == self.BUTTON_Y:
-            self._button_y = value
-
     def is_pressed(self, button):
-        if button == self.BUTTON_A:
-            return self._button_a
-        elif button == self.BUTTON_B:
-            return self._button_b
-        elif button == self.BUTTON_X:
-            return self._button_x
-        elif button == self.BUTTON_Y:
-            return self._button_y
+        keyString = self._win.checkKey()
+        if keyString == 'a' or keyString == 'b' or keyString == 'x' or keyString == 'y':
+            self._lastKey = keyString
+        if self._lastKey == 'a' and button == self.BUTTON_A:
+            self._lastKey = ''
+            return True
+        if self._lastKey == 'b' and button == self.BUTTON_B:
+            self._lastKey = ''
+            return True
+        if self._lastKey == 'x' and button == self.BUTTON_X:
+            self._lastKey = ''
+            return True
+        if self._lastKey == 'y' and button == self.BUTTON_Y:
+            self._lastKey = ''
+            return True
+        return False
 
     def set_pen(self, r, g=0, b=0):
         if isinstance(r, tuple):
