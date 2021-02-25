@@ -103,7 +103,10 @@ class Square:
         self._display.rectangle(self.x + 1, self.y + 1, Square.size - 2, Square.size - 2)
 
 class Board:
-    def __init__(self, game, display, x=10, y=10, width=200, height=100, square_size=10, draw_frame=True, draw_grid=True):
+    def __init__(self,
+        game, display, square_size=10, 
+        x=10, y=10, width=200, height=100, draw_frame=True, draw_grid=True, 
+        next_x=100, next_y=33, next_width=40, next_height=40, draw_next_frame=True):
         self._game = game
         self._width = width
         self._height = height
@@ -111,37 +114,53 @@ class Board:
         self._square_size = square_size
         self._x = x
         self._y = y
+        self._next_x = next_x
+        self._next_y = next_y
+        self._next_width = next_width
+        self._next_height = next_height
         self._draw_frame = draw_frame
-        colors = Colors(display)
-        self._frame = Frame(display, x - 2, y - 2, width + 4, height + 4, colors.white_fill, colors.black_fill)
+        self.colors = Colors(display)
+        self._frame = Frame(display, x - 2, y - 2, width + 4, height + 4, self.colors.white_fill, self.colors.black_fill)
         self._draw_grid  = draw_grid 
-        self._grid = Grid(display, x, y, width, height, colors.white_fill)
+        self._grid = Grid(display, x, y, width, height, self.colors.white_fill)
+        self._draw_next_frame  = draw_next_frame 
+        self._next_frame = Frame(display, next_x - 2, next_y - 2, next_width + 4, next_height + 4, self.colors.white_fill, self.colors.black_fill)
+        self._last_next_tetronimo = game._active_tetronimo
         if self._draw_frame:
             self._frame.draw()
 
     def _map_piece_type_to_color(self, piece_type):
-        colors = Colors(self._display)
         if piece_type == 0:
-            return colors.black_fill
+            return self.colors.black_fill
         elif piece_type == 1:
-            return colors.white
+            return self.colors.white
         elif piece_type == 2:
-            return colors.yellow
+            return self.colors.yellow
         elif piece_type == 3:
-            return colors.magenta
+            return self.colors.magenta
         elif piece_type == 4:
-            return colors.blue
+            return self.colors.blue
         elif piece_type == 5:
-            return colors.grey
+            return self.colors.grey
         elif piece_type == 6:
-            return colors.green
+            return self.colors.green
         elif piece_type == 7:
-            return colors.red
+            return self.colors.red
         elif piece_type == 8:
-            return colors.fuscia
+            return self.colors.fuscia
 
     def draw(self):
         for tile in self._game.changed_tiles:
             Square(self._display, self._x + (tile.x * self._square_size), self._y + (tile.y * self._square_size), self._map_piece_type_to_color(tile.piece.type)).draw()
         if self._draw_grid:
             self._grid.draw()
+        if self._last_next_tetronimo != self._game.next_tetronimo:
+            self._last_next_tetronimo = self._game.next_tetronimo
+            if self._draw_next_frame:
+                self._next_frame.draw()
+            for x in range(4):
+                for y in range(3):
+                    Square(self._display, self._next_x + (x * self._square_size), self._next_y + (y * self._square_size), self.colors.black_fill).draw()
+            for tile in self._last_next_tetronimo.current_tiles:
+                Square(self._display, self._next_x + (tile[0] * self._square_size), self._next_y + (tile[1] * self._square_size), self._map_piece_type_to_color(self._last_next_tetronimo.type)).draw()
+        self._display.update()
