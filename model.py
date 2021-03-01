@@ -129,6 +129,7 @@ class Game:
     def _init(self):
         self.status = 'reset'
         self.points = 0
+        self.lines = 0
         self.level = 1
         self.level_speed = 300.0
         self.level_step = 50
@@ -225,7 +226,7 @@ class Game:
                 self._active_tetronimo.move_up()
                 self._fix_tetronimo()
                 lines_to_clear = self._check_full_lines()
-                self._add_points(len(lines_to_clear))
+                self._add_points_and_lines(len(lines_to_clear))
                 self._clear_lines(lines_to_clear)
                 if self._check_game_over():
                     self.status = 'stopped'
@@ -245,8 +246,27 @@ class Game:
                     self.changed_tiles.append(Tile(clear.x, clear.y, Piece(0)))
         return True
     def _clear_lines(self, lines):
+        current_line_number = 0
+        max_line_number = 20
+        min_line_number = 0
+        for line in self.fixed_tiles:
+            line_complete = True
+            for tile in line:
+                if tile == None:
+                    line_complete = False
+                    break
+            if line_complete:
+                if current_line_number > min_line_number:
+                    min_line_number = current_line_number
+                if current_line_number < max_line_number:
+                    max_line_number = current_line_number + 1
+                for i in range(1, current_line_number + 1):
+                    self.fixed_tiles[i - 1] = self.fixed_tiles[i]
+                for i in range(len(self.fixed_tiles[0])):
+                    self.fixed_tiles[0][i] = None
+            current_line_number += 1
         return
-    def _add_points(self, lines):
+    def _add_points_and_lines(self, lines):
         if lines == 0:
             return
         elif lines == 1:
@@ -257,13 +277,14 @@ class Game:
             self.points += 500 * self.level
         elif lines == 4:
             self.points += 800 * self.level
+        self.lines += lines
     def _check_full_lines(self):
         lines_to_clear = []
         line_number = 0
         for line in self.fixed_tiles:
             full_line = True
             for tile in line:
-                if tile.piece.type != 0:
+                if tile == None or tile.piece.type != 0:
                     full_line = False
                     break
             if full_line:

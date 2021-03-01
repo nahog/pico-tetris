@@ -23,9 +23,10 @@ picodisplay.clear()
 
 game = Game(width=20, height=10)
 board = Board(
-        game, picodisplay, square_size=10, 
-        x=33, y=2, width=200, height=100, draw_frame=True, draw_grid=False, 
-        next_x=33, next_y=106, next_width=40, next_height=40, draw_next_frame=False)
+        game, picodisplay)
+        #, square_size=10, 
+        #x=33, y=2, width=200, height=100, draw_frame=True, draw_grid=False, 
+        #next_x=33, next_y=106, next_width=40, next_height=40, draw_next_frame=False)
 last_frame_time = 0
 
 try:
