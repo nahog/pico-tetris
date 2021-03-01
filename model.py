@@ -256,7 +256,7 @@ class Game:
         return True
     def _update_level(self):
         last_level = self.level
-        self.level = self.lines // 10
+        self.level = (self.lines // 10) + 1
         if self.level != last_level:
             self.level_speed -= self.level_step
             if self.level_speed < self.level_max_speed:
