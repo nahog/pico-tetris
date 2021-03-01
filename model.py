@@ -77,43 +77,43 @@ class Tetromino:
         self._update_transformed_tiles()
 
 Tetrominos = [
-    Tetromino(2, # 'O',
+    Tetromino(2, # O
         [[0,0],[0,1],[1,0],[1,1]], # 0
         [[0,0],[0,1],[1,0],[1,1]], # 90
         [[0,0],[0,1],[1,0],[1,1]], # 180
         [[0,0],[0,1],[1,0],[1,1]]  # 270
     ),
-    Tetromino(3, # 'I',
+    Tetromino(3, # I
         [[0,0],[1,0],[2,0],[3,0]], # 0
         [[0,0],[0,1],[0,2],[0,3]], # 90
         [[0,0],[1,0],[2,0],[3,0]], # 180
         [[0,0],[0,1],[0,2],[0,3]]  # 270
     ),
-    Tetromino(4, # 'L',
+    Tetromino(4, # L
         [[1,0],[1,1],[1,2],[0,2]], # 0
         [[0,0],[1,0],[2,0],[2,1]], # 90
         [[0,0],[1,0],[0,1],[0,2]], # 180
         [[0,1],[1,1],[2,1],[0,0]], # 270
     ),
-    Tetromino(5, # 'J',
+    Tetromino(5, # J
         [[0,0],[0,1],[0,2],[1,2]], # 0
         [[2,0],[0,1],[1,1],[2,1]], # 90
         [[0,0],[1,0],[1,1],[1,2]], # 180
         [[0,0],[1,0],[2,0],[0,1]], # 270
     ),
-    Tetromino(6, # 'Z',
+    Tetromino(6, # Z
         [[1,0],[2,0],[0,1],[1,1]], # 0
         [[0,0],[0,1],[1,1],[1,2]], # 90
         [[1,0],[2,0],[0,1],[1,1]], # 180
         [[0,0],[0,1],[1,1],[1,2]], # 270
     ),
-    Tetromino(7, # 'S',
+    Tetromino(7, # S
         [[0,0],[1,0],[1,1],[2,1]], # 0
         [[1,0],[0,1],[1,1],[0,2]], # 90
         [[0,0],[1,0],[1,1],[2,1]], # 180
         [[1,0],[0,1],[1,1],[0,2]], # 270
     ),
-    Tetromino(8, # 'T',
+    Tetromino(8, # T
         [[0,0],[1,0],[2,0],[1,1]], # 0
         [[0,0],[0,1],[1,1],[0,2]], # 90
         [[1,0],[0,1],[1,1],[2,1]], # 180
@@ -127,11 +127,11 @@ class Game:
         self.height = height
         self._init()
     def _init(self):
-        self.status = 'reset'
+        self.status = "reset"
         self.points = 0
         self.lines = 0
         self.level = 1
-        self.level_speed = 300.0
+        self.level_speed = 800.0
         self.level_step = 50
         self.level_max_speed = 100
         self.time = 0
@@ -203,13 +203,15 @@ class Game:
 
     # Game loop
     def _game_loop(self, delta_time):
-        if self.status != 'running':
+        if self.status == "ended":
+            self.status = "stopped"
+            return False
+        elif self.status == "reset" or self.status == "stoped":
             return False
         self.time += delta_time
         self.move_time += delta_time
         if self.move_time > self.level_speed:
             self.move_time = self.move_time % self.level_speed
-
             # Save current position to changed tiles to ensure we can erase them if needed
             changed_tetronimo = self._active_tetronimo
             self.changed_tiles.clear()
@@ -221,21 +223,28 @@ class Game:
             self._process_triggers()
 
             # Automatic move piece down
+            lines_to_clear = []
             self._active_tetronimo.move_down()
             if self._has_collision():
                 self._active_tetronimo.move_up()
                 self._fix_tetronimo()
                 lines_to_clear = self._check_full_lines()
                 self._add_points_and_lines(len(lines_to_clear))
+                self._update_level()
                 self._clear_lines(lines_to_clear)
                 if self._check_game_over():
-                    self.status = 'stopped'
+                    for x in range(self.width):
+                        for y in range(self.height):
+                            self.changed_tiles.append(Tile(x, y, Piece(1)))
+                    self.status = "ended"
+                    return False
                 else:
                     self._create_next_piece()
 
             # Update fixed tiles and changed tiles
-            for tile in changed_tetronimo.transformed_tiles:
-                self.changed_tiles.append(Tile(tile[0], tile[1], Piece(changed_tetronimo.type)))
+            if len(lines_to_clear) == 0:
+                for tile in changed_tetronimo.transformed_tiles:
+                    self.changed_tiles.append(Tile(tile[0], tile[1], Piece(changed_tetronimo.type)))
             for clear in possible_clears:
                 found_changed = False
                 for tile in self.changed_tiles:
@@ -245,27 +254,30 @@ class Game:
                 if not found_changed:
                     self.changed_tiles.append(Tile(clear.x, clear.y, Piece(0)))
         return True
+    def _update_level(self):
+        last_level = self.level
+        self.level = self.lines // 10
+        if self.level != last_level:
+            self.level_speed -= self.level_step
+            if self.level_speed < self.level_max_speed:
+                self.level_speed = self.level_max_speed
     def _clear_lines(self, lines):
-        current_line_number = 0
-        max_line_number = 20
-        min_line_number = 0
-        for line in self.fixed_tiles:
-            line_complete = True
-            for tile in line:
-                if tile == None:
-                    line_complete = False
-                    break
-            if line_complete:
-                if current_line_number > min_line_number:
-                    min_line_number = current_line_number
-                if current_line_number < max_line_number:
-                    max_line_number = current_line_number + 1
-                for i in range(1, current_line_number + 1):
-                    self.fixed_tiles[i - 1] = self.fixed_tiles[i]
-                for i in range(len(self.fixed_tiles[0])):
-                    self.fixed_tiles[0][i] = None
-            current_line_number += 1
-        return
+        for line_number in lines:
+            for i in reversed(range(line_number)):
+                self.fixed_tiles[i + 1] = self.fixed_tiles[i]
+            for i in range(len(self.fixed_tiles[0])):
+                self.fixed_tiles[0][i] = None
+        if len(lines) > 0:
+            x = 0
+            for line in self.fixed_tiles:
+                y = 0
+                for tile in line:
+                    if tile == None:
+                        self.changed_tiles.append(Tile(x, y, Piece(0)))
+                    else:
+                        self.changed_tiles.append(Tile(x, y, Piece(tile.piece.type)))
+                    y += 1
+                x += 1
     def _add_points_and_lines(self, lines):
         if lines == 0:
             return
@@ -284,7 +296,7 @@ class Game:
         for line in self.fixed_tiles:
             full_line = True
             for tile in line:
-                if tile == None or tile.piece.type != 0:
+                if tile == None:
                     full_line = False
                     break
             if full_line:
@@ -310,5 +322,5 @@ class Game:
     def reset(self):
         self._init()
     def run(self, delta_time):
-        self.status = 'running'
+        self.status = "running"
         self._game_loop(delta_time)

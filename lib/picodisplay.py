@@ -109,7 +109,7 @@ class PicoDisplay:
         print("remove_clip not implemented")
 
     def update(self):
-        print("update not implemented")
+        return
 
     def keep_running(self):
         try:

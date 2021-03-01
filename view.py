@@ -1,4 +1,6 @@
 from model import Game
+from char_letters import Letters
+from char_numbers import Numbers
 
 class Color:
     _intensityGradient1 = 25
@@ -103,490 +105,27 @@ class Square:
         self.color.enable_color()
         self._display.rectangle(self.x + 1, self.y + 1, Square.size - 2, Square.size - 2)
 
-class Numbers:
-    def __init__(self, display, fg_color, bg_color=None):
-        self._display = display
-        self.fg_color = fg_color
-        self.bg_color = bg_color
-        self._one_height = 7
-        self._others_height = 12
-        self._all_width = 19
-    def _draw_number(self, number, x, y):
-        if number == "1":
-            # Line 1
-            self._display.pixel(x, y-1)
-            self._display.pixel(x, y-2)
-            self._display.pixel(x, y-3)
-            # Line 2
-            self._display.pixel(x+1, y)
-            self._display.pixel(x+1, y-1)
-            self._display.pixel(x+1, y-2)
-            self._display.pixel(x+1, y-3)
-            # Line 3
-            self._display.pixel(x+2, y)
-            self._display.pixel(x+2, y-1)
-            self._display.pixel(x+2, y-2)
-            self._display.pixel(x+2, y-3)
-            # Line 4
-            self._display.pixel(x+3, y-1)
-            self._display.pixel(x+3, y-2)
-            self._display.pixel(x+3, y-3)
-            # Line 5
-            self._display.pixel(x+4, y-1)
-            self._display.pixel(x+4, y-2)
-            self._display.pixel(x+4, y-3)
-            # Line 6
-            self._display.pixel(x+5, y-1)
-            self._display.pixel(x+5, y-2)
-            self._display.pixel(x+5, y-3)
-            # Line 7
-            self._display.pixel(x+6, y-1)
-            self._display.pixel(x+6, y-2)
-            self._display.pixel(x+6, y-3)
-            # Line 8
-            self._display.pixel(x+7, y-1)
-            self._display.pixel(x+7, y-2)
-            self._display.pixel(x+7, y-3)
-            # Line 9
-            self._display.pixel(x+8, y-1)
-            self._display.pixel(x+8, y-2)
-            self._display.pixel(x+8, y-3)
-            # Line 10
-            self._display.pixel(x+9, y-1)
-            self._display.pixel(x+9, y-2)
-            self._display.pixel(x+9, y-3)
-            # Line 11
-            self._display.pixel(x+10, y-1)
-            self._display.pixel(x+10, y-2)
-            self._display.pixel(x+10, y-3)
-            # Line 12
-            self._display.pixel(x+11, y-1)
-            self._display.pixel(x+11, y-2)
-            self._display.pixel(x+11, y-3)
-            # Line 13
-            self._display.pixel(x+12, y-1)
-            self._display.pixel(x+12, y-2)
-            self._display.pixel(x+12, y-3)
-            # Line 14
-            self._display.pixel(x+13, y-1)
-            self._display.pixel(x+13, y-2)
-            self._display.pixel(x+13, y-3)
-            # Line 15
-            self._display.pixel(x+14, y)
-            self._display.pixel(x+14, y-1)
-            self._display.pixel(x+14, y-2)
-            self._display.pixel(x+14, y-3)
-            self._display.pixel(x+14, y-4)
-            # Line 16
-            self._display.pixel(x+15, y)
-            self._display.pixel(x+15, y-1)
-            self._display.pixel(x+15, y-2)
-            self._display.pixel(x+15, y-3)
-            self._display.pixel(x+15, y-4)
-            # Line 17
-            self._display.pixel(x+16, y)
-            self._display.pixel(x+16, y-1)
-            self._display.pixel(x+16, y-2)
-            self._display.pixel(x+16, y-3)
-            self._display.pixel(x+16, y-4)
-            return y-7
-        elif number == "2":
-            return 0
-        elif number == "3":
-            return 0
-        elif number == "4":
-            return 0
-        elif number == "5":
-            return 0
-        elif number == "6":
-            return 0
-        elif number == "7":
-            return 0
-        elif number == "8":
-            return 0
-        elif number == "9":
-            return 0
-        elif number == "0":
-            # Line 1
-            self._display.pixel(x, y-2)
-            self._display.pixel(x, y-3)
-            self._display.pixel(x, y-4)
-            self._display.pixel(x, y-5)
-            self._display.pixel(x, y-6)
-            # Line 2
-            self._display.pixel(x+1, y-1)
-            self._display.pixel(x+1, y-2)
-            self._display.pixel(x+1, y-3)
-            self._display.pixel(x+1, y-4)
-            self._display.pixel(x+1, y-5)
-            self._display.pixel(x+1, y-6)
-            self._display.pixel(x+1, y-7)
-            # Line 3
-            self._display.pixel(x+2, y)
-            self._display.pixel(x+2, y-1)
-            self._display.pixel(x+2, y-2)
-            self._display.pixel(x+2, y-3)
-            self._display.pixel(x+2, y-5)
-            self._display.pixel(x+2, y-6)
-            self._display.pixel(x+2, y-7)
-            self._display.pixel(x+2, y-8)
-            # Line 4
-            self._display.pixel(x+3, y)
-            self._display.pixel(x+3, y-1)
-            self._display.pixel(x+3, y-2)
-            self._display.pixel(x+3, y-6)
-            self._display.pixel(x+3, y-7)
-            self._display.pixel(x+3, y-8)
-            # Line 5
-            self._display.pixel(x+4, y)
-            self._display.pixel(x+4, y-1)
-            self._display.pixel(x+4, y-2)
-            self._display.pixel(x+4, y-6)
-            self._display.pixel(x+4, y-7)
-            self._display.pixel(x+4, y-8)
-            # Line 6
-            self._display.pixel(x+5, y)
-            self._display.pixel(x+5, y-1)
-            self._display.pixel(x+5, y-2)
-            self._display.pixel(x+5, y-6)
-            self._display.pixel(x+5, y-7)
-            self._display.pixel(x+5, y-8)
-            # Line 7
-            self._display.pixel(x+6, y)
-            self._display.pixel(x+6, y-1)
-            self._display.pixel(x+6, y-2)
-            self._display.pixel(x+6, y-6)
-            self._display.pixel(x+6, y-7)
-            self._display.pixel(x+6, y-8)
-            # Line 8
-            self._display.pixel(x+7, y)
-            self._display.pixel(x+7, y-1)
-            self._display.pixel(x+7, y-2)
-            self._display.pixel(x+7, y-6)
-            self._display.pixel(x+7, y-7)
-            self._display.pixel(x+7, y-8)
-            # Line 9
-            self._display.pixel(x+8, y)
-            self._display.pixel(x+8, y-1)
-            self._display.pixel(x+8, y-2)
-            self._display.pixel(x+8, y-6)
-            self._display.pixel(x+8, y-7)
-            self._display.pixel(x+8, y-8)
-            # Line 10
-            self._display.pixel(x+9, y)
-            self._display.pixel(x+9, y-1)
-            self._display.pixel(x+9, y-2)
-            self._display.pixel(x+9, y-6)
-            self._display.pixel(x+9, y-7)
-            self._display.pixel(x+9, y-8)
-            # Line 11
-            self._display.pixel(x+10, y)
-            self._display.pixel(x+10, y-1)
-            self._display.pixel(x+10, y-2)
-            self._display.pixel(x+10, y-6)
-            self._display.pixel(x+10, y-7)
-            self._display.pixel(x+10, y-8)
-            # Line 12
-            self._display.pixel(x+11, y)
-            self._display.pixel(x+11, y-1)
-            self._display.pixel(x+11, y-2)
-            self._display.pixel(x+11, y-6)
-            self._display.pixel(x+11, y-7)
-            self._display.pixel(x+11, y-8)
-            # Line 13
-            self._display.pixel(x+12, y)
-            self._display.pixel(x+12, y-1)
-            self._display.pixel(x+12, y-2)
-            self._display.pixel(x+12, y-6)
-            self._display.pixel(x+12, y-7)
-            self._display.pixel(x+12, y-8)
-            # Line 14---------------------------
-            self._display.pixel(x+13, y)
-            self._display.pixel(x+13, y-1)
-            self._display.pixel(x+13, y-2)
-            self._display.pixel(x+13, y-6)
-            self._display.pixel(x+13, y-7)
-            self._display.pixel(x+13, y-8)
-            # Line 15
-            self._display.pixel(x+14, y)
-            self._display.pixel(x+14, y-1)
-            self._display.pixel(x+14, y-2)
-            self._display.pixel(x+14, y-3)
-            self._display.pixel(x+14, y-4)
-            # Line 16
-            self._display.pixel(x+15, y)
-            self._display.pixel(x+15, y-1)
-            self._display.pixel(x+15, y-2)
-            self._display.pixel(x+15, y-3)
-            self._display.pixel(x+15, y-4)
-            # Line 17
-            self._display.pixel(x+16, y)
-            self._display.pixel(x+16, y-1)
-            self._display.pixel(x+16, y-2)
-            self._display.pixel(x+16, y-3)
-            self._display.pixel(x+16, y-4)
-            return y-11
-        else:
-            return -1
-    def draw(self, number, x, y):
-        str_number = str(number)
-        clear_height = 0
-        for i in str_number:
-            if i == "1":
-                clear_height += self._one_height
-            else:
-                clear_height += self._others_height
-        if self.bg_color != None:
-            self.bg_color.enable_color()
-            self._display.rectangle(x, y-clear_height, self._all_width, clear_height)
-        self.fg_color.enable_color()
-        next_y = y
-        for i in str_number:
-            next_y = self._draw_number(i, x, next_y)
-
 class Legends:
     def __init__(self, display, fg_color, bg_color, game):
         self._display = display
         self.fg_color = fg_color
         self._game = game
         self._numbers = Numbers(display, fg_color, bg_color)
+        self._letters = Letters(display, fg_color)
     def draw(self):
         self.fg_color.enable_color()
         # Points
-        self._draw_word("points", 1, 133)
+        self._letters.draw("points", 1, 133)
         self._numbers.draw(self._game.points, 11, 133)
-        # Lines word
-        self._draw_word("lines", 1, 60)
-        self._numbers.draw(self._game.lines, 11, 60)
-        # Level word
-        self._draw_word("level", 31, 133)
+        # Lines
+        self._letters.draw("lines", 1, 30)
+        self._numbers.draw(self._game.lines, 11, 30)
+        # Level
+        self._letters.draw("level", 31, 133)
         self._numbers.draw(self._game.level, 40, 133)
-        # Next word
-        self._draw_word("next", 61, 133)
-    def _draw_word(self, word, x, y):
-        next_y = y
-        for letter in word:
-            next_y = self._draw_letter(letter, x, next_y)
-    def _draw_letter(self, letter, x, y):
-        if letter == "e":
-            # Line 1
-            self._display.pixel(x, y)
-            self._display.pixel(x, y-1)
-            self._display.pixel(x, y-2)
-            self._display.pixel(x, y-3)
-            # Line 2
-            self._display.pixel(x+1, y)
-            # Line 3
-            self._display.pixel(x+2, y)
-            # Line 4
-            self._display.pixel(x+3, y)
-            self._display.pixel(x+3, y-1)
-            self._display.pixel(x+3, y-2)
-            # Line 5
-            self._display.pixel(x+4, y)
-            # Line 6
-            self._display.pixel(x+5, y)
-            # Line 7
-            self._display.pixel(x+6, y)
-            self._display.pixel(x+6, y-1)
-            self._display.pixel(x+6, y-2)
-            self._display.pixel(x+6, y-3)
-            return y-6
-        elif letter == "i":
-            # Line 1
-            self._display.pixel(x, y)
-            # Line 2
-            self._display.pixel(x+1, y)
-            # Line 3
-            self._display.pixel(x+2, y)
-            # Line 4
-            self._display.pixel(x+3, y)
-            # Line 5
-            self._display.pixel(x+4, y)
-            # Line 6
-            self._display.pixel(x+5, y)
-            # Line 7
-            self._display.pixel(x+6, y)
-            return y-3
-        elif letter == "l":
-            # Line 1
-            self._display.pixel(x, y)
-            # Line 2
-            self._display.pixel(x+1, y)
-            # Line 3
-            self._display.pixel(x+2, y)
-            # Line 4
-            self._display.pixel(x+3, y)
-            # Line 5
-            self._display.pixel(x+4, y)
-            # Line 6
-            self._display.pixel(x+5, y)
-            # Line 7
-            self._display.pixel(x+6, y)
-            self._display.pixel(x+6, y-1)
-            self._display.pixel(x+6, y-2)
-            self._display.pixel(x+6, y-3)
-            return y-6
-        elif letter == "n":
-            # Line 1
-            self._display.pixel(x, y)
-            self._display.pixel(x, y-4)
-            # Line 2
-            self._display.pixel(x+1, y)
-            self._display.pixel(x+1, y-1)
-            self._display.pixel(x+1, y-4)
-            # Line 3
-            self._display.pixel(x+2, y)
-            self._display.pixel(x+2, y-1)
-            self._display.pixel(x+2, y-4)
-            # Line 4
-            self._display.pixel(x+3, y)
-            self._display.pixel(x+3, y-2)
-            self._display.pixel(x+3, y-4)
-            # Line 5
-            self._display.pixel(x+4, y)
-            self._display.pixel(x+4, y-3)
-            self._display.pixel(x+4, y-4)
-            # Line 6
-            self._display.pixel(x+5, y)
-            self._display.pixel(x+5, y-3)
-            self._display.pixel(x+5, y-4)
-            # Line 7
-            self._display.pixel(x+6, y)
-            self._display.pixel(x+6, y-4)
-            return y-7
-        elif letter == "o":
-            # Line 1
-            self._display.pixel(x, y-1)
-            self._display.pixel(x, y-2)
-            # Line 2
-            self._display.pixel(x+1, y)
-            self._display.pixel(x+1, y-3)
-            # Line 3
-            self._display.pixel(x+2, y)
-            self._display.pixel(x+2, y-3)
-            # Line 4
-            self._display.pixel(x+3, y)
-            self._display.pixel(x+3, y-3)
-            # Line 5
-            self._display.pixel(x+4, y)
-            self._display.pixel(x+4, y-3)
-            # Line 6
-            self._display.pixel(x+5, y)
-            self._display.pixel(x+5, y-3)
-            # Line 7
-            self._display.pixel(x+6, y-1)
-            self._display.pixel(x+6, y-2)
-            return y-6
-        elif letter == "p":
-            # Line 1
-            self._display.pixel(x, y)
-            self._display.pixel(x, y-1)
-            self._display.pixel(x, y-2)
-            # Line 2
-            self._display.pixel(x+1, y)
-            self._display.pixel(x+1, y-3)
-            # Line 3
-            self._display.pixel(x+2, y)
-            self._display.pixel(x+2, y-3)
-            # Line 4
-            self._display.pixel(x+3, y)
-            self._display.pixel(x+3, y-1)
-            self._display.pixel(x+3, y-2)
-            # Line 5
-            self._display.pixel(x+4, y)
-            # Line 6
-            self._display.pixel(x+5, y)
-            # Line 7
-            self._display.pixel(x+6, y-1)
-            return y-6
-        elif letter == "s":
-            # Line 1
-            self._display.pixel(x, y-1)
-            self._display.pixel(x, y-2)
-            self._display.pixel(x, y-2)
-            # Line 2
-            self._display.pixel(x+1, y)
-            # Line 3
-            self._display.pixel(x+2, y)
-            # Line 4
-            self._display.pixel(x+3, y-1)
-            self._display.pixel(x+3, y-2)
-            # Line 5
-            self._display.pixel(x+4, y-3)
-            # Line 6
-            self._display.pixel(x+5, y-3)
-            # Line 7
-            self._display.pixel(x+6, y)
-            self._display.pixel(x+6, y-1)
-            self._display.pixel(x+6, y-2)
-            return y-6
-        elif letter == "t":
-            # Line 1
-            self._display.pixel(x, y)
-            self._display.pixel(x, y-1)
-            self._display.pixel(x, y-2)
-            self._display.pixel(x, y-3)
-            self._display.pixel(x, y-4)
-            # Line 2
-            self._display.pixel(x+1, y-2)
-            # Line 3
-            self._display.pixel(x+2, y-2)
-            # Line 4
-            self._display.pixel(x+3, y-2)
-            # Line 5
-            self._display.pixel(x+4, y-2)
-            # Line 6
-            self._display.pixel(x+5, y-2)
-            # Line 7
-            self._display.pixel(x+6, y-2)
-            return y-7
-        elif letter == "v":
-            # Line 1
-            self._display.pixel(x, y)
-            self._display.pixel(x, y-4)
-            # Line 2
-            self._display.pixel(x+1, y)
-            self._display.pixel(x+1, y-4)
-            # Line 3
-            self._display.pixel(x+2, y)
-            self._display.pixel(x+2, y-4)
-            # Line 4
-            self._display.pixel(x+3, y)
-            self._display.pixel(x+3, y-4)
-            # Line 5
-            self._display.pixel(x+4, y)
-            self._display.pixel(x+4, y-4)
-            # Line 6
-            self._display.pixel(x+5, y-1)
-            self._display.pixel(x+5, y-3)
-            # Line 7
-            self._display.pixel(x+6, y-2)
-            return y-7
-        elif letter == "x":
-            # Line 1
-            self._display.pixel(x, y)
-            self._display.pixel(x, y-4)
-            # Line 2
-            self._display.pixel(x+1, y)
-            self._display.pixel(x+1, y-4)
-            # Line 3
-            self._display.pixel(x+2, y-1)
-            self._display.pixel(x+2, y-3)
-            # Line 4
-            self._display.pixel(x+3, y-2)
-            # Line 5
-            self._display.pixel(x+4, y-1)
-            self._display.pixel(x+4, y-3)
-            # Line 6
-            self._display.pixel(x+5, y)
-            self._display.pixel(x+5, y-4)
-            # Line 7
-            self._display.pixel(x+6, y)
-            self._display.pixel(x+6, y-4)
-            return y-7
-        else:
-            return -1
+        # Next piece
+        self._letters.draw("next", 61, 133)
+
 class Board:
     def __init__(self,
         game, display, square_size=10, 
@@ -605,6 +144,9 @@ class Board:
         self._next_width = next_width
         self._next_height = next_height
         self._draw_frame = draw_frame
+        self._last_points = 0
+        self._last_lines = 0
+        self._last_level = 1
         self.colors = Colors(display)
         self._frame = Frame(display, x - 2, y - 2, width + 4, height + 4, self.colors.white_fill, self.colors.black_fill)
         self._draw_grid  = draw_grid 
@@ -659,4 +201,10 @@ class Board:
             self._grid.draw()
         if self._draw_next_piece:
             self._draw_next()
+        if self._game.points != self._last_points or self._game.lines != self._last_lines or self._game.level != self._last_level:
+            self._last_points = self._game.points
+            self._last_lines = self._game.lines
+            self._last_level = self._game.level
+            if self._draw_legends:
+                self._legends.draw()
         self._display.update()

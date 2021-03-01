@@ -8,4 +8,9 @@
 
 Has a copy of a display emulator that draws on a windows instead of using the real pico (at least for simple graphics)
 
-## Work in progress
+## Basic usage
+
+B = Rotate
+A = Reset
+Y = Move left
+X = Move rigth

@@ -44,7 +44,8 @@ try:
             game.reset()
         if picodisplay.is_pressed(picodisplay.BUTTON_B):
             game.rotate()
-        board.draw()
+        if game.status != "stopped":
+            board.draw()
 except:
     raise
 
